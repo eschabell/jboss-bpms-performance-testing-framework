@@ -7,7 +7,7 @@ provide metrics when put under stress.
 
 Setup and Configuration
 -----------------------
-1. [Download and unzip.](https://github.com/jbossdemocentral/bpms-travel-agency-demo/archive/master.zip)
+1. [Download and unzip.](https://github.com/eschabell/jboss-bpms-performance-testing-framework/archive/master.zip)
 
 2. Add products to installs directory. For example download and add BPMS installer jar into the installs directory.
 
