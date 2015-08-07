@@ -4,18 +4,18 @@
 
     <parent>
         <groupId>org.jboss</groupId>
-        <artifactId>brms-testing</artifactId>
+        <artifactId>bpms-testing</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>brms-testing-examples</artifactId>
-    <name>BRMS testing - examples</name>
+    <artifactId>bpms-testing-examples</artifactId>
+    <name>JBoss BPM Suite testing - examples</name>
     <description>Code for running the example processes: model classes, work item handlers, test data providers.</description>
 
     <dependencies>
         <dependency>
             <groupId>org.jboss</groupId>
-            <artifactId>brms-testing-ejb</artifactId>
+            <artifactId>bpms-testing-ejb</artifactId>
             <type>ejb</type>
         </dependency>
         <dependency>
@@ -31,7 +31,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
-                    <finalName>brms-testing-examples</finalName>
+                    <finalName>bpms-testing-examples</finalName>
                 </configuration>
             </plugin>
         </plugins>
