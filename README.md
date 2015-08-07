@@ -29,7 +29,7 @@ Released versions
 -----------------
 See the tagged releases for the following versions of the product:
 
-- v0.1 is initial migration to JBoss BPM Suite 6.1 running on JBoss EAP 6.4 with rules and human task node examples.
+- v0.1 coming soon with JBoss BPM Suite 6.1 running on JBoss EAP 6.4 with rules and human task node examples.
 
 
 ![Demo projects](https://raw.githubusercontent.com/eschabell/jboss-bpms-performance-testing-framework/master/docs/demo-images/projects.png)
