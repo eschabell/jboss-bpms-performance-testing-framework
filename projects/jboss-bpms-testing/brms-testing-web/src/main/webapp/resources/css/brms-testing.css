@@ -1,0 +1,54 @@
+body {
+    font-family: MS Sans Serif;
+}
+
+.rf-edt {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rf-edt-hdr,.rf-edt-hdr-c-cnt,.rf-edt-tbl-hdr,.rf-dt-hdr-c,.rf-dt-shdr-c {
+    background-image: none !important;
+    background-color: #0D0D61 !important;
+    color: #FFFFFF !important;
+}
+
+.rf-edt-hdr-c {
+    overflow-y: hidden;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+
+.rf-edt-c,.rf-dt-c {
+    border-bottom-color: #ABC933 !important;
+    height: 100% !important;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+
+.rf-edt-cnt td {
+    border-bottom: 1px solid #9FC0E9;
+    border-right: 1px solid #9FC0E9;
+}
+
+.rf-p-hdr,.rf-fu-hdr {
+    background-image: none !important;
+    background-color: #0D0D61 !important;
+    color: #FFFFFF !important;
+}
+
+tr.odd {
+    background-color: #FCFFFE;
+}
+
+tr.even {
+    background-color: #EAF1CD;
+}
+
+textarea {
+    resize: none;
+}
+
+.mtb,.mtc,.mte {
+    min-width: 50px;
+}

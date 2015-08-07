@@ -1,0 +1,133 @@
+#!/bin/sh 
+DEMO="JBoss BPM Suite Performance Testing Framework"
+AUTHORS="Maurice de Chateau, Andrew Block, Eric D. Schabell"
+PROJECT="git@github.com:jbossdemocentral/jboss-bpms-performance-testing-framework.git"
+PRODUCT="JBoss BPM Suite"
+JBOSS_HOME=./target/jboss-eap-6.4
+SERVER_DIR=$JBOSS_HOME/standalone/deployments
+SERVER_CONF=$JBOSS_HOME/standalone/configuration/
+SERVER_BIN=$JBOSS_HOME/bin
+SRC_DIR=./installs
+SUPPORT_DIR=./support
+PRJ_DIR=./projects
+TEST_PROJECT=$PRJ_DIR/jboss-bpms-testing
+BPMS=jboss-bpmsuite-6.1.0.GA-installer.jar
+EAP=jboss-eap-6.4.0-installer.jar
+VERSION=6.1
+
+# wipe screen.
+clear 
+
+echo
+echo "######################################################################################"
+echo "##                                                                                  ##"   
+echo "##  Setting up the ${DEMO}                    ##"
+echo "##                                                                                  ##"   
+echo "##                                                                                  ##"   
+echo "##   ####  ####   #   #      ### #   # ##### ##### #####   ##### #####  ### #####   ##"
+echo "##   #   # #   # # # # #    #    #   #   #     #   #         #   #     #      #     ##"
+echo "##   ####  ####  #  #  #     ##  #   #   #     #   ###       #   ###    ##    #     ##"
+echo "##   #   # #     #     #       # #   #   #     #   #         #   #        #   #     ##"
+echo "##   ####  #     #     #    ###  ##### #####   #   #####     #   ##### ###    #     ##"
+echo "##                                                                                  ##"   
+echo "##                                                                                  ##"   
+echo "##  brought to you by,                                                              ##"   
+echo "##             ${AUTHORS}                   ##"
+echo "##                                                                                  ##"   
+echo "##  ${PROJECT}    ##"
+echo "##                                                                                  ##"   
+echo "######################################################################################"
+echo
+
+command -v mvn -q >/dev/null 2>&1 || { echo >&2 "Maven is required but not installed yet... aborting."; exit 1; }
+
+# make some checks first before proceeding.	
+if [ -r $SRC_DIR/$EAP ] || [ -L $SRC_DIR/$EAP ]; then
+	echo Product sources are present...
+	echo
+else
+	echo Need to download $EAP package from the Customer Portal 
+	echo and place it in the $SRC_DIR directory to proceed...
+	echo
+	exit
+fi
+
+if [ -r $SRC_DIR/$BPMS ] || [ -L $SRC_DIR/$BPMS ]; then
+	echo Product sources are present...
+	echo
+else
+	echo Need to download $BPMS package from the Customer Portal 
+	echo and place it in the $SRC_DIR directory to proceed...
+	echo
+	exit
+fi
+
+# Remove the old JBoss instance, if it exists.
+if [ -x $JBOSS_HOME ]; then
+	echo "  - existing JBoss product install removed..."
+	echo
+	rm -rf target
+fi
+
+# Run installers.
+echo "JBoss EAP installer running now..."
+echo
+java -jar $SRC_DIR/$EAP $SUPPORT_DIR/installation-eap -variablefile $SUPPORT_DIR/installation-eap.variables
+
+if [ $? -ne 0 ]; then
+	echo
+	echo Error occurred during JBoss EAP installation!
+	exit
+fi
+
+echo
+echo JBoss BPM Suite installer running now...
+echo
+java -jar $SRC_DIR/$BPMS $SUPPORT_DIR/installation-bpms -variablefile $SUPPORT_DIR/installation-bpms.variables
+
+if [ $? -ne 0 ]; then
+	echo Error occurred during $PRODUCT installation!
+	exit
+fi
+
+echo
+echo "  - enabling demo accounts role setup in application-roles.properties file..."
+echo
+cp $SUPPORT_DIR/application-roles.properties $SERVER_CONF
+
+echo "  - setting up standalone.xml configuration adjustments..."
+echo
+cp $SUPPORT_DIR/standalone.xml $SERVER_CONF
+
+echo "  - setup email task notification users..."
+echo
+cp $SUPPORT_DIR/userinfo.properties $SERVER_DIR/business-central.war/WEB-INF/classes/
+
+# Add execute permissions to the standalone.sh script.
+echo "  - making sure standalone.sh for server is executable..."
+echo
+chmod u+x $JBOSS_HOME/bin/standalone.sh
+
+# build testing projects.
+mvn package -f $PRJ_DIR/$TEST_PROJECT/pom.xml        ## TODO: fix projects builds.
+
+#echo
+#echo " - deploying projects to business central..."
+#cp $PRJ_DIR/$TEST_PROJECT/target/TODO.jar $SERVER_DIR   ## TODO: once builds, fix to deploy.
+
+echo
+echo "======================================================================"
+echo "=                                                                    ="
+echo "=  You can now start the JBoss BPM Suite with:                       ="
+echo "=                                                                    ="
+echo "=    $SERVER_BIN/standalone.sh                        ="
+echo "=                                                                    ="
+echo "=  - login, build and deploy JBoss BPM Suite process project at:     ="
+echo "=                                                                    ="
+echo "=    http://localhost:8080/business-central (u:erics/p:bpmsuite1!)   ="
+echo "=                                                                    ="
+echo "=  $DEMO Setup Complete.     ="
+echo "=                                                                    ="
+echo "======================================================================"
+echo
+

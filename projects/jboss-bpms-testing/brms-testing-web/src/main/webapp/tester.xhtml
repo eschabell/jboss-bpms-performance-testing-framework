@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <rich:panel header="Available processes">
+                <rich:extendedDataTable id="processOverview" value="#{testerBean.availableProcesses}" var="process" noDataLabel="No processes available...">
+                    <rich:column width="300px">
+                        <f:facet name="header">
+                            <h:outputText value="Process" />
+                        </f:facet>
+                        <h:outputText value="#{process.processId}" />
+                    </rich:column>
+                    <rich:column width="250px">
+                        <f:facet name="header">
+                            <h:outputText value="Package" />
+                        </f:facet>
+                        <h:outputText value="#{process.packageName}" />
+                    </rich:column>
+                    <rich:column width="76px">
+                        <f:facet name="header">
+                            <h:outputText value="# Instances" />
+                        </f:facet>
+                        <h:inputText value="#{process.numberOfInstances}" maxlength="4" size="4" />
+                    </rich:column>
+                </rich:extendedDataTable>
+                <p />
+                <a4j:commandButton value="Refresh" action="#{testerBean.refreshProcesses}" render="processOverview" style="margin-left:578px;" />
+            </rich:panel>
+            <rich:panel header="Execution">
+                <h:panelGrid columns="3">
+                    <h:panelGroup>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Start process instances in parallel:" />
+                            <h:selectBooleanCheckbox value="#{testerBean.startInParallel}" />
+                            <h:outputLabel value="Run instances in individual sessions:" />
+                            <h:selectBooleanCheckbox value="#{testerBean.runInIndividualKnowledgeSession}" />
+                        </h:panelGrid>
+                    </h:panelGroup>
+                    <a4j:commandButton value="Run!" action="#{testerBean.startProcessInstances}" execute="@form" render="poll,grid,metrics" status="runStatus"
+                        disabled="empty #{testerBean.availableProcesses}" style="margin-left:100px;" />
+                    <a4j:status name="runStatus">
+                        <f:facet name="start">
+                            <h:graphicImage value="/resources/img/loader.gif" style="margin-left:30px;" />
+                        </f:facet>
+                    </a4j:status>
+                </h:panelGrid>
+            </rich:panel>
+        </h:form>
+        <rich:panel header="Metrics">
+            <h:form>
+                <a4j:poll id="poll" interval="500" enabled="#{testerBean.pollEnabled}" render="poll,grid,metrics" />
+            </h:form>
+            <h:form>
+                <h:panelGrid id="grid" columns="6" columnClasses="mta,mtb,mtc,mtd,mte,mtf">
+                    <h:outputLabel value="Process instances started:" />
+                    <h:outputText value="#{testerBean.numberOfInstancesStarted}" />
+                    <h:outputLabel />
+                    <h:outputLabel value="Mean process runtime:" />
+                    <h:outputText value="#{testerBean.processMeanRuntime}" />
+                    <h:outputLabel value="ms" />
+
+                    <h:outputLabel value="Process instances ended:" />
+                    <h:outputText value="#{testerBean.numberOfInstancesEnded}" />
+                    <h:outputLabel />
+                    <h:outputLabel value="Minimum process runtime:" />
+                    <h:outputText value="#{testerBean.processMinRuntime}" />
+                    <h:outputLabel value="ms" />
+
+                    <h:outputLabel />
+                    <h:outputLabel />
+                    <h:outputLabel />
+                    <h:outputLabel value="Maximum process runtime:" />
+                    <h:outputText value="#{testerBean.processMaxRuntime}" />
+                    <h:outputLabel value="ms" />
+                </h:panelGrid>
+                <h:inputTextarea id="metrics" value="#{testerBean.currentMetrics}" readonly="true" cols="101" rows="10" />
+            </h:form>
+        </rich:panel>
+    </ui:define>
+
+</ui:composition>
