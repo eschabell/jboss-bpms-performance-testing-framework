@@ -22,9 +22,7 @@ Setup and Configuration
      - login for admin and other roles (u:erics / p:bpmsuite1!)
     ```
 
-6. (TODO: Automate during installation) Import repository export CustomerEval RewardsExtended file from support dir
-
-7. Login to BRMS testing applicaiton (http://localhost:8080/brms-testing) and start testing and measuring!
+7. (TODO: project does not build, update to 6.1 product) Login to BRMS testing applicaiton (http://localhost:8080/brms-testing) and start testing and measuring!
 
 
 Released versions
